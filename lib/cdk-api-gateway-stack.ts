@@ -21,7 +21,7 @@ export class CdkApiGatewayStack extends Stack {
     const table = new aws_dynamodb.Table(this, 'Table', {
       partitionKey: {
         name: 'id',
-        type: aws_dynamodb.AttributeType.NUMBER
+        type: aws_dynamodb.AttributeType.STRING
       }
     })
 
@@ -73,7 +73,7 @@ export class CdkApiGatewayStack extends Stack {
     queue.grantSendMessages(createMessageFunction)
     queue.grantConsumeMessages(readMessageFunction)
     
-    table.grant(readMessageFunction, "dynamodb:PutItem")
+    table.grantReadWriteData(readMessageFunction)
 
     new CfnOutput(this, 'QueueUrl', {
       value: queue.queueUrl

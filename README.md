@@ -1,8 +1,6 @@
-# Welcome to your CDK TypeScript project!
+# AWS CDK - Lambda, API Gateway, SQS, DynamoDB
 
-This is a blank project for TypeScript development with CDK.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+This repo shows an example of the 3 services connected.
 
 ## Useful commands
 
