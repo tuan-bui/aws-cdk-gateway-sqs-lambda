@@ -8,7 +8,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "deploy": "yarn build && aws-vault exec pit yarn cdk deploy",
+    "destroy": "aws-vault exec pit yarn cdk destroy"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",

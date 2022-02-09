@@ -1,33 +1,25 @@
 const aws = require('aws-sdk');
 
 const handler = async function (event: any, context: any) {
-  const dynamodb = new aws.DynamoDB();
+  const dynamodb = new aws.DynamoDB()
 
   console.log(event)
 
-  event.Records.forEach(async (record: any) => {
+  for (const record of event.Records) {
     try {
       const params = {
         TableName: process.env.DYNAMODB_TABLE_NAME,
-        Key: {
-          "id": {
-            S: `${Math.random()}`
-          }
-        },
-        UpdateExpression: "set body = :x",
-        ExpressionAttributeValues: {
-          ":x": {
-            "S": record.body
+        Item: {
+          'primaryId': {
+            N: `${Math.ceil(Math.random() * 100000000)}`,
           },
+          'body': {
+            S: record.body
+          }
         }
       }
   
-      console.log('Table', process.env.DYNAMODB_TABLE_NAME)
-      console.log('Attempting put', params)
-  
-      const res = await dynamodb.updateItem(params).promise();
-
-      console.log(res)
+      const res = await dynamodb.putItem(params).promise();
 
       return {
         statusCode: 200,
@@ -36,11 +28,16 @@ const handler = async function (event: any, context: any) {
     } catch (e) {
       console.error(e)
       return {
-        statusCOde: 400,
+        statusCode: 400,
         body: e
       }
     }
-  })
+  }
+
+  return {
+    statusCode: 200,
+    body: 'none'
+  } 
 }
 
 export {

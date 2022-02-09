@@ -1,6 +1,7 @@
 import { HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
 import { HttpLambdaIntegration, HttpUrlIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import { CfnOutput, Stack, StackProps, aws_lambda_event_sources, aws_lambda, aws_rds, aws_dynamodb ,aws_apigateway, aws_sqs, Duration, aws_lambda_nodejs, aws_apigatewayv2 } from 'aws-cdk-lib';
+import { TableEncryption } from 'aws-cdk-lib/aws-dynamodb';
 import { Effect, Policy, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as path from 'path';
@@ -20,8 +21,8 @@ export class CdkApiGatewayStack extends Stack {
 
     const table = new aws_dynamodb.Table(this, 'Table', {
       partitionKey: {
-        name: 'id',
-        type: aws_dynamodb.AttributeType.STRING
+        name: 'primaryId',
+        type: aws_dynamodb.AttributeType.NUMBER
       }
     })
 
@@ -73,7 +74,7 @@ export class CdkApiGatewayStack extends Stack {
     queue.grantSendMessages(createMessageFunction)
     queue.grantConsumeMessages(readMessageFunction)
     
-    table.grantReadWriteData(readMessageFunction)
+    table.grantWriteData(readMessageFunction)
 
     new CfnOutput(this, 'QueueUrl', {
       value: queue.queueUrl

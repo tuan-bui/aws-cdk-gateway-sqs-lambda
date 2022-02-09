@@ -5,24 +5,22 @@ const handler = async function () {
 
   try {
     const params = {
-      TableName: `TestCdkApiGatewayStack-TableCD117FA1-11E93JWPN1XMS`,
-      Key: {
-        "id": {
-          S: `${Math.random()}`
-        }
-      },
-      UpdateExpression: "set body = :x",
-      ExpressionAttributeValues: {
-        ":x": {
-          "S": "test"
-        },
-      }
+      TableName: `TestCdkApiGatewaySqsLambdaStack-TableCD117FA1-1CGZOY088HSI3`,
+      // Item: {
+      //   'primaryId': {
+      //     N: `${Math.ceil(Math.random() * 1000000)}`,
+      //   },
+      //   'body': {
+      //     S: "Test"
+      //   }
+      // }
     }
 
     console.log('Table', process.env.DYNAMODB_TABLE_NAME)
     console.log('Attempting put', params)
 
-    const res = await dynamodb.updateItem(params).promise();
+    // const res = await dynamodb.putItem(params).promise();
+    const res = await dynamodb.scan(params).promise();
 
     console.log(res)
 

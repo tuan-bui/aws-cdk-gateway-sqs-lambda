@@ -5,7 +5,7 @@ import { CdkApiGatewayStack } from '../lib/cdk-api-gateway-stack';
 import { EndpointType } from "aws-cdk-lib/aws-apigateway";
 
 const app = new cdk.App();
-new CdkApiGatewayStack(app, 'TestCdkApiGatewayStack', {
+new CdkApiGatewayStack(app, 'TestCdkApiGatewaySqsLambdaStack', {
   apiName: 'Test',
   endpointType: EndpointType.EDGE,
 });
